@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",                                
+    "rootDir": "./src",
+    "baseUrl": ".",
+    "paths": {
+      "@routes": ["./src/routes"],
+      "@controllers": ["./src/controllers"],
+      "@utils": ["./src/utils"],
+      "@models": ["./src/models"],
+      "@services": ["./src/services"],
+      "@middleware": ["./src/middlewares"],
+      "@config": ["./src/config"],
+      "@interfaces": ["./src/interfaces"],
+      "@docs": ["./src/docs"],
+      "@validations": ["./src/validations"]
+    },
+    "typeRoots": ["./node_modules/@types"],
+    "resolveJsonModule": true,
+    "outDir": "./build",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
