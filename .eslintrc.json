@@ -30,7 +30,7 @@
                     "@utils": "./src/utils",
                     "@models": "./src/models",
                     "@services": "./src/services",
-                    "@middleware": "./src/middlewares",
+                    "@middlewares": "./src/middlewares",
                     "@config": "./src/config",
                     "@interfaces": "./src/interfaces",
                     "@docs": "./src/docs",
