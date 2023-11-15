@@ -5,5 +5,4 @@ export interface AdminType {
   email: string;
   phone: number;
   address: string;
-  image?: string;
 }

@@ -25,6 +25,7 @@
                 {
                   "alias": {
                     "@routes": "./src/routes",
+                    "@constants": "./src/constants",
                     "@controllers": "./src/controllers",
                     "@utils": "./src/utils",
                     "@models": "./src/models",

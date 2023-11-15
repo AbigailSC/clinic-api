@@ -1,6 +1,7 @@
 export interface UserType {
     email: string;
     password: string;
+    image?: string;
     rol: string;
     verified: boolean;
     isActive: boolean;
