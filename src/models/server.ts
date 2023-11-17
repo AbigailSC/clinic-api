@@ -5,7 +5,7 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import limitter from 'express-rate-limit';
 import { config, dbConnection } from '@config';
-import { userRoute } from '@routes';
+import { adminRoute, authRoute, patientRoute, userRoute } from '@routes';
 
 export class Server {
   private app: Express;
@@ -22,8 +22,8 @@ export class Server {
     this.rootPath = '/api/v1/';
     this.usersPath = 'users';
     this.authPath = 'auth';
-    this.adminPath = 'admin';
-    this.patientPath = 'patient';
+    this.adminPath = 'admins';
+    this.patientPath = 'patients';
 
     this.connectDB();
     this.middlewares();
@@ -63,9 +63,9 @@ export class Server {
 
   routes(): void {
     this.app.use(`${this.rootPath}${this.usersPath}`, userRoute);
-    this.app.use(`${this.rootPath}${this.authPath}`, userRoute);
-    this.app.use(`${this.rootPath}${this.adminPath}`, userRoute);
-    this.app.use(`${this.rootPath}${this.patientPath}`, userRoute);
+    this.app.use(`${this.rootPath}${this.authPath}`, authRoute);
+    this.app.use(`${this.rootPath}${this.adminPath}`, adminRoute);
+    this.app.use(`${this.rootPath}${this.patientPath}`, patientRoute);
   }
 
   listen(): void {

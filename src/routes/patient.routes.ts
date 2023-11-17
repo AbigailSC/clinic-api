@@ -6,14 +6,18 @@ import {
   postPatient,
   updatePatient
 } from '@controllers';
-import { verifyRoles } from '@middlewares';
+import { recolectErrors, verifyRoles } from '@middlewares';
+import { verifyPatientParams } from '@validations';
 import { Router } from 'express';
 
 const router = Router();
 
 router
   .route('/')
-  .post([verifyRoles([ROLES.Admin])], postPatient)
+  .post(
+    [verifyRoles([ROLES.Admin]), ...verifyPatientParams, recolectErrors],
+    postPatient
+  )
   .get(getPatients);
 
 router.route('/:id').put(updatePatient).get(getPatient).delete(deletePatient);
