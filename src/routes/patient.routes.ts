@@ -1,8 +1,12 @@
-import { postPatient } from '@controllers';
+import { ROLES } from '@constants';
+import { deletePatient, getPatient, getPatients, postPatient, updatePatient } from '@controllers';
+import { verifyRoles } from '@middlewares';
 import { Router } from 'express';
-import multer from 'multer';
 
-const upload = multer();
 const router = Router();
 
-router.route('/patients').post(upload.single('image'), postPatient);
+router.route('/').post([verifyRoles([ROLES.Admin])], postPatient).get(getPatients);
+
+router.route('/:id').put(updatePatient).get(getPatient).delete(deletePatient);
+
+export default router;

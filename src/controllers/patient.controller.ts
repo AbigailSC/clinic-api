@@ -1,5 +1,5 @@
 import { ROLES } from '@constants';
-import { CustomRequest, PatientType } from '@interfaces';
+import { PatientType } from '@interfaces';
 import { catchAsync } from '@middlewares';
 import { Patient, User } from '@models';
 import { RequestHandler } from 'express';
@@ -46,8 +46,8 @@ export const postPatient: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
-export const updatePatient: RequestHandler = catchAsync(async (req: CustomRequest, res) => {
-  const { id } = req
+export const updatePatient: RequestHandler = catchAsync(async (req, res) => {
+  const { id } = req.params
   const {
     name,
     lastname,
@@ -98,8 +98,8 @@ export const getPatients: RequestHandler = catchAsync(async (_req, res) => {
   })
 });
 
-export const getPatient: RequestHandler = catchAsync(async (req: CustomRequest, res) => {
-  const { id } = req;
+export const getPatient: RequestHandler = catchAsync(async (req, res) => {
+  const { id } = req.params;
   const patientExist = await Patient.findById(id);
   if (patientExist === null) {
     return res.status(204).json({
@@ -113,8 +113,8 @@ export const getPatient: RequestHandler = catchAsync(async (req: CustomRequest, 
   })
 });
 
-export const deletePatient: RequestHandler = catchAsync(async (req: CustomRequest, res) => {
-  const {id} = req;
+export const deletePatient: RequestHandler = catchAsync(async (req, res) => {
+  const {id} = req.params;
   const patientExist = await Patient.findById(id);
   if (patientExist === null) {
     return res.status(204).json({
