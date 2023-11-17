@@ -1,7 +1,6 @@
 import { ObjectId } from "mongoose";
 
 export interface Document {
-    adminId: ObjectId;
-    form: string;
-    
+  adminId: ObjectId;
+  form: string;  
 }

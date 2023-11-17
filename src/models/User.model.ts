@@ -2,6 +2,7 @@ import { Schema, model } from 'mongoose';
 import bcrypt from 'bcrypt';
 import { UserType } from '@interfaces';
 import { ROLES } from '@constants';
+import { config } from '@config';
 
 const UsersSchema = new Schema(
   {
@@ -18,7 +19,8 @@ const UsersSchema = new Schema(
     },
     image: {
       type: String,
-      required: false
+      required: false,
+      default: config.db.imageDefault
     },
     rol: {
       type: String,

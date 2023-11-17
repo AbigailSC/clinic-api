@@ -1,6 +1,10 @@
 import dotenv from 'dotenv';
 
-dotenv.config();
+const env = dotenv.config();
+
+if (env.error) {
+  throw new Error('💥 Could not find .env files')
+}
 
 export const config = {
   app: {
@@ -10,7 +14,8 @@ export const config = {
   },
   db: {
     uri: process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017/',
-    devUri: process.env.MONGODB_DEV_URI ?? 'mongodb://127.0.0.1:27017/'
+    devUri: process.env.MONGODB_DEV_URI ?? 'mongodb://127.0.0.1:27017/',
+    imageDefault: process.env.IMAGE_DEFAULT_USER ?? ''
   },
   auth: {
     jwtSecret: process.env.JWT_SECRET ?? 'SECRET',

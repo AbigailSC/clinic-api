@@ -2,7 +2,7 @@ import { recolectErrors } from '@middlewares';
 import { NextFunction, Request, Response } from 'express';
 import { check } from 'express-validator';
 
-export const verifyCreate = [
+export const verifyLoginParams = [
   check('email', 'Email is required').exists().not().isEmpty(),
   check('email').isEmail().withMessage('Email format invalid'),
   check('email').normalizeEmail().escape(),
@@ -16,7 +16,17 @@ export const verifyCreate = [
   }
 ];
 
-export const verifyPatient = [
+export const verifyPatientParams = [
+  check('birthdate', 'Birthdate is required').not().isEmpty(),
+  check('birthdate', 'Birthdate is not a Date').isDate(),
+  check('socialWork', 'Social work is required'),
+  check('socialWork', 'Social work is not a boolean').isBoolean(),
+  (req: Request, res: Response, next: NextFunction) => {
+    recolectErrors(req, res, next);
+  }
+];
+
+export const verifyAdminParams = [
   check('name', 'Name is required').not().isEmpty(),
   check('name', 'Name must be at least 3 characters').isLength({ min: 3 }),
   check('name', 'Name is not a string').isString(),
@@ -35,11 +45,7 @@ export const verifyPatient = [
   check('address', 'Address is required').not().isEmpty(),
   check('address', 'Address must be at least 7 characters').isLength({ min: 7 }),
   check('address', 'Address is not a string').isString(),
-  check('birthdate', 'Birthdate is required').not().isEmpty(),
-  check('birthdate', 'Birthdate is not a Date').isDate(),
-  check('socialWork', 'Social work is required'),
-  check('socialWork', 'Social work is not a boolean').isBoolean(),
   (req: Request, res: Response, next: NextFunction) => {
     recolectErrors(req, res, next);
   }
-];
+]

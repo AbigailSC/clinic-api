@@ -1,4 +1,4 @@
-const validarCelularAR = (valor: string): boolean => {
+export const validarCelularAR = (valor: string): boolean => {
   // Remover +54 opcional al inicio
   valor = valor.replace(/^\+54/, '');
 

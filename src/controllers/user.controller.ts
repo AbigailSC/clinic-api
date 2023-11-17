@@ -79,3 +79,10 @@ export const getUsers: RequestHandler = catchAsync(async (_req, res) => {
       });
     }
   );
+
+  export const uploadImage: RequestHandler = catchAsync(async (req, res) => {
+    res.status(201).json({
+      message: 'File upload succesfully!',
+      file: req.file as Express.Multer.File
+    })
+  });

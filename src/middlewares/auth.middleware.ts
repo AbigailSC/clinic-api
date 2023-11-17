@@ -51,7 +51,7 @@ export const verifyUserIsAlreadyVerified = async (
 
   try {
     const decoded: DecodedToken = await decodedToken(token);
-    const user = await UserSchema.findById(decoded.id);
+    const user = await User.findById(decoded.id);
 
     if (user === null)
       return res.status(404).json({
@@ -59,7 +59,7 @@ export const verifyUserIsAlreadyVerified = async (
         message: 'No user found'
       });
 
-    if (user.verified && user.emailVerifyTokenLink === '') {
+    if (user.verified) {
       return res.status(401).json({
         status: res.statusCode,
         message: messageEmailAlreadyVerified()
@@ -81,7 +81,7 @@ export const verifyRoles: (roles: string[]) => RequestHandler =
     try {
       const decoded = await decodedToken(token);
 
-      const user = await UserSchema.findById(decoded.id);
+      const user = await User.findById(decoded.id);
 
       if (user === null)
         return res.status(404).json({
