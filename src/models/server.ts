@@ -12,12 +12,18 @@ export class Server {
   private port: string | number;
   private rootPath: string;
   private usersPath: string;
+  private authPath: string;
+  private adminPath: string;
+  private patientPath: string;
 
   constructor() {
     this.app = express();
     this.port = config.app.port;
     this.rootPath = '/api/v1/';
-    this.usersPath = 'users'
+    this.usersPath = 'users';
+    this.authPath = 'auth';
+    this.adminPath = 'admin';
+    this.patientPath = 'patient';
 
     this.connectDB();
     this.middlewares();
@@ -31,30 +37,35 @@ export class Server {
   middlewares(): void {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
-    this.app.use(cors({
-      origin: `http://127.0.0.1:${this.port}`,
-      methods: 'GET, POST, PUT, PATCH, DELETE',
-      preflightContinue: false,
-      optionsSuccessStatus: 200
-    }));
-    this.app.use(limitter({
-      windowMs: 15 * 60 * 1000,
-      max: 100,
-      message: {
-        status: 429,
-        message: 'Too many requests from this IP, please try again in an hour!'
-      }
-    }));
+    this.app.use(
+      cors({
+        origin: `http://127.0.0.1:${this.port}`,
+        methods: 'GET, POST, PUT, PATCH, DELETE',
+        preflightContinue: false,
+        optionsSuccessStatus: 200
+      })
+    );
+    this.app.use(
+      limitter({
+        windowMs: 15 * 60 * 1000,
+        max: 100,
+        message: {
+          status: 429,
+          message:
+            'Too many requests from this IP, please try again in an hour!'
+        }
+      })
+    );
     this.app.use(morgan('dev'));
     this.app.use(express.static(path.join(__dirname, 'public')));
     this.app.use(cookieParser());
   }
 
   routes(): void {
-    this.app.use(this.rootPath, (_req, res) => {
-      res.send('hello world!');
-    });
     this.app.use(`${this.rootPath}${this.usersPath}`, userRoute);
+    this.app.use(`${this.rootPath}${this.authPath}`, userRoute);
+    this.app.use(`${this.rootPath}${this.adminPath}`, userRoute);
+    this.app.use(`${this.rootPath}${this.patientPath}`, userRoute);
   }
 
   listen(): void {

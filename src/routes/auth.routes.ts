@@ -11,11 +11,11 @@ import {
   verifyRefreshToken,
   verifyUserIsActivated
 } from '@middlewares';
-import { verifyCreate } from '@validations';
+import { verifyLoginParams } from '@validations';
 
 const router = Router();
 
-router.route('/signin').post([...verifyCreate, recolectErrors], singIn);
+router.route('/signin').post([...verifyLoginParams, recolectErrors], singIn);
 router.route('/refresh-token').get([verifyRefreshToken], refreshToken);
 router.route('/activate/:id').put([verifyUserIsActivated], activateAccount);
 

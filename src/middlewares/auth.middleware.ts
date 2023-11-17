@@ -96,9 +96,7 @@ export const verifyRoles: (roles: string[]) => RequestHandler =
     const token = req.headers.authorization as string;
     try {
       const decoded = await decodedToken(token);
-
       const user = await User.findById(decoded.id);
-
       if (!roles.includes(user!.rol))
         return res.status(401).json({
           status: res.statusCode,
