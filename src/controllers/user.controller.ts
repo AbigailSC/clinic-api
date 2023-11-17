@@ -28,18 +28,14 @@ export const getUsers: RequestHandler = catchAsync(async (_req, res) => {
   
   export const updateUser: RequestHandler = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const { password }: UserType = req.body;
+    const data: UserType = req.body;
     const updateUser = await User.findById(id);
     if (updateUser === null)
       return res.status(500).json({
         status: res.statusCode,
         message: 'User not found'
       });
-    const encryptedPassword = await updateUser.encryptPassword(password);
-    await User.findByIdAndUpdate(id, {
-      password: encryptedPassword,
-      verified: true
-    });
+    await User.findByIdAndUpdate(id, data);
     res.json({
       status: res.statusCode,
       message: 'User updated'
