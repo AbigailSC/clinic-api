@@ -14,7 +14,7 @@ const UsersSchema = new Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: false,
       trim: true
     },
     image: {
@@ -68,14 +68,7 @@ UsersSchema.methods.comparePassword = async function (
 };
 
 UsersSchema.methods.toJSON = function () {
-  const {
-    _v,
-    password,
-    _id,
-    createdAt,
-    updatedAt,
-    ...user
-  } = this.toObject();
+  const { _v, password, _id, createdAt, updatedAt, ...user } = this.toObject();
   return user;
 };
 

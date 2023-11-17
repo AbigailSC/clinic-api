@@ -16,7 +16,7 @@ const AdminSchema = new Schema(
       lowercase: true
     },
     document: {
-      type: String,
+      type: Number,
       required: true
     },
     email: {
