@@ -40,7 +40,11 @@ const PatientSchema = new Schema(
     socialWork: {
       type: Boolean,
       default: false
-    }
+    },
+    consents: [{
+      type: Schema.Types.ObjectId,
+      ref: 'document'
+    }]
   },
   {
     timestamps: true,
