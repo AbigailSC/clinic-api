@@ -94,3 +94,18 @@ export const getPatients: RequestHandler = catchAsync(async (req, res) => {
     data: patients
   })
 });
+
+export const getPatient: RequestHandler = catchAsync(async (req, res) => {
+  const {id} = req.params;
+  const patientExist = await Patient.findById(id);
+  if (patientExist === null) {
+    return res.status(204).json({
+      status: res.statusCode,
+      message: 'Patient not found'
+    })
+  }
+  return res.json({
+    status: res.statusCode,
+    data: patientExist.populate('consents')
+  })
+});
