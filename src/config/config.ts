@@ -13,7 +13,7 @@ export const config = {
     originUrl: process.env.ORIGIN_URL ?? 'http://localhost:4000/'
   },
   db: {
-    uri: process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017/',
+    uri: process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017/api',
     devUri: process.env.MONGODB_DEV_URI ?? 'mongodb://127.0.0.1:27017/',
     imageDefault: process.env.IMAGE_DEFAULT_USER ?? ''
   },

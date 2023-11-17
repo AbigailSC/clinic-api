@@ -1,6 +1,9 @@
-import { ObjectId } from "mongoose";
+import { ObjectId } from 'mongoose';
 
-export interface Document {
+export interface DocumentType {
   adminId: ObjectId;
-  form: string;  
+  form: string;
+  signed: boolean;
+  signedAt?: Date;
+  signedBy: ObjectId;
 }

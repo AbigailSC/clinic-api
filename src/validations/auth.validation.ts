@@ -16,6 +16,7 @@ export const verifyLoginParams = [
   }
 ];
 
+
 export const verifyPatientParams = [
   check('birthdate', 'Birthdate is required').not().isEmpty(),
   check('birthdate', 'Birthdate is not a Date').isDate(),
@@ -48,4 +49,4 @@ export const verifyAdminParams = [
   (req: Request, res: Response, next: NextFunction) => {
     recolectErrors(req, res, next);
   }
-]
+];
