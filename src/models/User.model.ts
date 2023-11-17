@@ -27,6 +27,16 @@ const UsersSchema = new Schema(
       required: false,
       default: ROLES.Patient
     },
+    adminId: {
+      type: Schema.Types.ObjectId,
+      ref: 'admin',
+      required: false
+    },
+    patientId: {
+      type: Schema.Types.ObjectId,
+      ref: 'patient',
+      required: false
+    },
     verified: {
       type: Boolean,
       required: true,

@@ -59,7 +59,9 @@ export const activateAccount: RequestHandler = catchAsync(async (req, res) => {
 
 export const deleteAccount: RequestHandler = catchAsync(async (req, res) => {
   const { id } = req.params;
-  await User.findByIdAndDelete(id);
+  await User.findByIdAndUpdate(id, {
+    isActive: false
+  });
   res.json({
     status: res.statusCode,
     message: messageEmailDesactivated()

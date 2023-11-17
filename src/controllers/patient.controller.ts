@@ -1,5 +1,5 @@
 import { ROLES } from '@constants';
-import { PatientType } from '@interfaces';
+import { CustomRequest, PatientType } from '@interfaces';
 import { catchAsync } from '@middlewares';
 import { Patient, User } from '@models';
 import { RequestHandler } from 'express';
@@ -46,8 +46,8 @@ export const postPatient: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
-export const updatePatient: RequestHandler = catchAsync(async (req, res) => {
-  const { id } = req.params
+export const updatePatient: RequestHandler = catchAsync(async (req: CustomRequest, res) => {
+  const { id } = req
   const {
     name,
     lastname,
@@ -81,8 +81,11 @@ export const updatePatient: RequestHandler = catchAsync(async (req, res) => {
   })
 });
 
-export const getPatients: RequestHandler = catchAsync(async (req, res) => {
-  const patients = await Patient.find().populate('consents');
+export const getPatients: RequestHandler = catchAsync(async (_req, res) => {
+  const patients = await User.find({
+    isActive: true,
+    rol: ROLES.Patient
+  }).populate('patientId');
   if (patients.length === 0){
     return res.status(204).json({
       status: res.statusCode,
@@ -95,8 +98,8 @@ export const getPatients: RequestHandler = catchAsync(async (req, res) => {
   })
 });
 
-export const getPatient: RequestHandler = catchAsync(async (req, res) => {
-  const {id} = req.params;
+export const getPatient: RequestHandler = catchAsync(async (req: CustomRequest, res) => {
+  const { id } = req;
   const patientExist = await Patient.findById(id);
   if (patientExist === null) {
     return res.status(204).json({
@@ -107,5 +110,23 @@ export const getPatient: RequestHandler = catchAsync(async (req, res) => {
   return res.json({
     status: res.statusCode,
     data: patientExist.populate('consents')
+  })
+});
+
+export const deletePatient: RequestHandler = catchAsync(async (req: CustomRequest, res) => {
+  const {id} = req;
+  const patientExist = await Patient.findById(id);
+  if (patientExist === null) {
+    return res.status(204).json({
+      status: res.statusCode,
+      message: 'Patient not found'
+    })
+  }
+  await User.findByIdAndUpdate(id, {
+    isActive: false
+  })
+  return res.json({
+    status: res.statusCode,
+    message: 'Patient deleted!'
   })
 });
