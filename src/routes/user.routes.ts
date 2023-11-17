@@ -8,6 +8,6 @@ router.route('/').get(getUserById).put(updateUser);
 
 router.route('/:id').delete(deleteUser).patch(restoreUser)
 
-router.route(':id/image').post([upload], uploadImage)
+router.route('/:id/image').post([upload], uploadImage)
 
 export default router;
