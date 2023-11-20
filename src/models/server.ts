@@ -29,7 +29,6 @@ export class Server {
     this.middlewares();
     this.routes();
   }
-
   async connectDB(): Promise<void> {
     await dbConnection();
   }
@@ -37,14 +36,7 @@ export class Server {
   middlewares(): void {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
-    this.app.use(
-      cors({
-        origin: `http://127.0.0.1:${this.port}`,
-        methods: 'GET, POST, PUT, PATCH, DELETE',
-        preflightContinue: false,
-        optionsSuccessStatus: 200
-      })
-    );
+    this.app.use(cors());
     this.app.use(
       limitter({
         windowMs: 15 * 60 * 1000,
@@ -70,7 +62,7 @@ export class Server {
 
   listen(): void {
     this.app.listen(this.port, () => {
-      console.log(`🚀...Server running on http://127.0.0.1:${this.port}`);
+      console.log(`🚀... Server running on http://127.0.0.1:${this.port}`);
     });
   }
 }
