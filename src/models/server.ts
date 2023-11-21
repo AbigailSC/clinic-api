@@ -36,7 +36,10 @@ export class Server {
   middlewares(): void {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
-    this.app.use(cors());
+    this.app.use(cors({
+      origin: config.app.originUrl,
+      credentials: true
+    }));
     this.app.use(
       limitter({
         windowMs: 15 * 60 * 1000,

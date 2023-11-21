@@ -40,10 +40,12 @@ export const getCredentialsRefreshToken = (): CredentialsRefreshToken => {
   try {
     const expiresIn = 60 * 60 * 24 * 7; // 7 days
     return {
-      httpOnly: true,
+      httpOnly: false,
       maxAge: expiresIn * 1000,
       secure: config.app.env === 'production',
-      expires: new Date(Date.now() + expiresIn * 1000)
+      expires: new Date(Date.now() + expiresIn * 1000),
+      sameSite: 'none',
+      singed: true
     };
   } catch (error) {
     console.log(error);

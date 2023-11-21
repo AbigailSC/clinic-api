@@ -6,6 +6,8 @@ export interface CredentialsRefreshToken {
   maxAge: number;
   secure: boolean;
   expires: Date;
+  sameSite: boolean | "strict" | "lax" | "none" | undefined;
+  singed: boolean
 }
 
 export interface CustomRequest extends Request {

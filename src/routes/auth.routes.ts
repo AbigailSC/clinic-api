@@ -12,7 +12,7 @@ import { verifyActivateParams, verifyLoginParams } from '@validations';
 const router = Router();
 
 router.route('/login').post([...verifyLoginParams, recolectErrors], singIn);
-router.route('/refresh-token').get([verifyRefreshToken], refreshToken);
+router.route('/refresh-token').post([verifyRefreshToken], refreshToken);
 router
   .route('/activate/:id')
   .put([...verifyActivateParams, recolectErrors], activateAccount);
