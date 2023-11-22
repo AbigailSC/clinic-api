@@ -61,7 +61,11 @@ export class Server {
   }
 
   routes(): void {
-    this.app.use(`${this.rootPath}${this.usersPath}`, userRoute);
+    this.app.use(
+      `${this.rootPath}${this.usersPath}`,
+      verifyRoles([ROLES.Admin]),
+      userRoute
+    );
     this.app.use(`${this.rootPath}${this.authPath}`, authRoute);
     this.app.use(
       `${this.rootPath}${this.adminPath}`,
