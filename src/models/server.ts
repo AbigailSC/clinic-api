@@ -41,7 +41,8 @@ export class Server {
     this.app.use(
       cors({
         origin: config.app.originUrl,
-        credentials: true
+        credentials: true,
+        exposedHeaders: ['X-Auth-Token','X-Rate-Limit'] 
       })
     );
     this.app.use(
