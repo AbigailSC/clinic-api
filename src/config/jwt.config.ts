@@ -45,7 +45,8 @@ export const getCredentialsRefreshToken = (): CredentialsRefreshToken => {
       secure: config.app.env === 'production',
       expires: new Date(Date.now() + expiresIn * 1000),
       sameSite: 'none',
-      singed: true
+      singed: true,
+      credentials: true
     };
   } catch (error) {
     console.log(error);

@@ -7,7 +7,8 @@ export interface CredentialsRefreshToken {
   secure: boolean;
   expires: Date;
   sameSite: boolean | "strict" | "lax" | "none" | undefined;
-  singed: boolean
+  singed: boolean,
+  credentials: boolean
 }
 
 export interface CustomRequest extends Request {

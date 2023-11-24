@@ -1,4 +1,4 @@
-import { generateToken } from '@config';
+import { generateToken, getCredentialsRefreshToken } from '@config';
 import { CustomRequest } from '@interfaces';
 import { catchAsync } from '@middlewares';
 import { User } from '@models';
@@ -20,13 +20,13 @@ export const singIn: RequestHandler = catchAsync(async (req, res) => {
       .status(401)
       .json({ status: res.statusCode, message: 'Invalid password' });
   }
-  // res.cookie(
-  //   'refreshToken',
-  //   await generateToken(userFound.id),
-  //   getCredentialsRefreshToken()
-  // );
+  res.cookie(
+    'refreshToken',
+    await generateToken(userFound.id),
+    getCredentialsRefreshToken()
+  );
 
-  res.set('refreshToken', await generateToken(userFound.id));
+  //res.set('refreshToken', await generateToken(userFound.id));
   return res.json({
     status: res.statusCode,
     message: 'Log in successfully'
