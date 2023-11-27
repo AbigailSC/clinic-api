@@ -6,7 +6,7 @@ import {
   postPatient,
   updatePatient
 } from '@controllers';
-import { recolectErrors, verifyRoles } from '@middlewares';
+import { recolectErrors, verifyRefreshToken, verifyRoles } from '@middlewares';
 import { verifyPatientParams } from '@validations';
 import { Router } from 'express';
 
@@ -15,7 +15,12 @@ const router = Router();
 router
   .route('/')
   .post(
-    [verifyRoles([ROLES.Admin]), ...verifyPatientParams, recolectErrors],
+    [
+      verifyRefreshToken,
+      verifyRoles([ROLES.Admin]),
+      ...verifyPatientParams,
+      recolectErrors
+    ],
     postPatient
   )
   .get(getPatients);

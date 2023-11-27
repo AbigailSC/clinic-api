@@ -30,18 +30,18 @@ router
   .delete(
     [
       verifyRefreshToken,
+      verifyRoles([ROLES.Patient]),
       ...verifyIdParam,
-      recolectErrors,
-      verifyRoles([ROLES.Patient])
+      recolectErrors
     ],
     deleteUser
   )
   .patch(
     [
       verifyRefreshToken,
+      verifyRoles([ROLES.Admin]),
       ...verifyIdParam,
-      recolectErrors,
-      verifyRoles([ROLES.Admin])
+      recolectErrors
     ],
     restoreUser
   );
@@ -51,9 +51,9 @@ router
   .post(
     [
       verifyRefreshToken,
+      verifyRoles([ROLES.Admin]),
       ...verifyIdParam,
       recolectErrors,
-      verifyRoles([ROLES.Admin]),
       upload
     ],
     uploadImage

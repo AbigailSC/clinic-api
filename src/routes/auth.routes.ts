@@ -27,9 +27,9 @@ router
   .patch(
     [
       verifyRefreshToken,
+      verifyRoles([ROLES.Admin, ROLES.Patient, ROLES.SuperAdmin]),
       ...verifyIdParam,
-      recolectErrors,
-      verifyRoles([ROLES.Admin, ROLES.Patient, ROLES.SuperAdmin])
+      recolectErrors
     ],
     deleteAccount
   );
