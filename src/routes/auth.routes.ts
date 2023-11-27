@@ -17,7 +17,7 @@ router
   .route('/activate/:id')
   .put([...verifyActivateParams, recolectErrors], activateAccount);
 
-router.patch('/desactivate/:id', deleteAccount);
+router.route('/desactivate/:id').patch(deleteAccount);
 router.route('/logout').get([verifyRefreshToken], logOut);
 
 export default router;
