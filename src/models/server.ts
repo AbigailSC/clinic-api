@@ -5,7 +5,13 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import limitter from 'express-rate-limit';
 import { config, dbConnection } from '@config';
-import { adminRoute, authRoute, patientRoute, userRoute } from '@routes';
+import {
+  adminRoute,
+  authRoute,
+  patientRoute,
+  userRoute,
+  documentRoute
+} from '@routes';
 import { verifyRoles } from '@middlewares';
 import { ROLES } from '@constants';
 
@@ -17,6 +23,7 @@ export class Server {
   private authPath: string;
   private adminPath: string;
   private patientPath: string;
+  private documentPath: string;
 
   constructor() {
     this.app = express();
@@ -26,6 +33,7 @@ export class Server {
     this.authPath = 'auth';
     this.adminPath = 'admins';
     this.patientPath = 'patients';
+    this.documentPath = 'documents';
 
     this.connectDB();
     this.middlewares();
@@ -74,6 +82,7 @@ export class Server {
       adminRoute
     );
     this.app.use(`${this.rootPath}${this.patientPath}`, patientRoute);
+    this.app.use(`${this.rootPath}${this.documentPath}`, documentRoute);
   }
 
   listen(): void {

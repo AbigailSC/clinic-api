@@ -4,6 +4,7 @@ import { catchAsync } from '@middlewares';
 import { Document } from '@models';
 import { getCurrentDateFormatted, getPdfFilename } from '@utils';
 import { RequestHandler } from 'express';
+import { generateHeaderPdf } from 'src/constants/pdfTemplate';
 
 export const postDocument: RequestHandler = catchAsync(async (req, res) => {
   const form: FormType = req.body;
@@ -15,9 +16,9 @@ export const postDocument: RequestHandler = catchAsync(async (req, res) => {
     dateFormatted
   );
   const buffers: Buffer[] = [];
-
+  generateHeaderPdf(document);
   document.on('data', (buffer) => buffers.push(buffer));
-  document.on('end', () => {
+  document.on('end', async () => {
     const pdfData = Buffer.concat(buffers);
     res.writeHead(200, {
       'Content-Type': 'application/pdf',
@@ -31,6 +32,7 @@ export const postDocument: RequestHandler = catchAsync(async (req, res) => {
       signedAt: null,
       signedBy: patientId
     });
+    await newDocument.save();
     document.end();
   });
   res.json({
