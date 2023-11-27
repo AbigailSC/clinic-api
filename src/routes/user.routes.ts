@@ -6,23 +6,57 @@ import {
   restoreUser,
   uploadImage
 } from '@controllers';
-import { upload, verifyRoles } from '@middlewares';
+import {
+  recolectErrors,
+  upload,
+  verifyRefreshToken,
+  verifyRoles
+} from '@middlewares';
 import { ROLES } from '@constants';
+import { verifyIdParam } from '@validations';
 
 const router: Router = Router();
 
 router
   .route('/')
-  .get([verifyRoles([ROLES.Admin, ROLES.Patient])], getUserById)
+  .get(
+    [verifyRefreshToken, verifyRoles([ROLES.Admin, ROLES.Patient])],
+    getUserById
+  )
   .put([verifyRoles([ROLES.Patient])], updateUser);
 
 router
   .route('/:id')
-  .delete([verifyRoles([ROLES.Patient])], deleteUser)
-  .patch([verifyRoles([ROLES.Admin])], restoreUser);
+  .delete(
+    [
+      verifyRefreshToken,
+      ...verifyIdParam,
+      recolectErrors,
+      verifyRoles([ROLES.Patient])
+    ],
+    deleteUser
+  )
+  .patch(
+    [
+      verifyRefreshToken,
+      ...verifyIdParam,
+      recolectErrors,
+      verifyRoles([ROLES.Admin])
+    ],
+    restoreUser
+  );
 
 router
   .route('/:id/image')
-  .post([verifyRoles([ROLES.Admin]), upload], uploadImage);
+  .post(
+    [
+      verifyRefreshToken,
+      ...verifyIdParam,
+      recolectErrors,
+      verifyRoles([ROLES.Admin]),
+      upload
+    ],
+    uploadImage
+  );
 
 export default router;

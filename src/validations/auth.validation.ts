@@ -97,3 +97,13 @@ export const verifyAdminParams = [
     recolectErrors(req, res, next);
   }
 ];
+
+export const verifyIdParam = [
+  check('id', 'ID is required').not().isEmpty(),
+  check('id', 'ID is not a string').isString(),
+  check('id', 'ID is not a valid Mongo ID').isMongoId(),
+
+  (req: Request, res: Response, next: NextFunction) => {
+    recolectErrors(req, res, next);
+  }
+];

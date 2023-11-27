@@ -7,7 +7,11 @@ import {
   logOut
 } from '@controllers';
 import { recolectErrors, verifyRefreshToken, verifyRoles } from '@middlewares';
-import { verifyActivateParams, verifyLoginParams } from '@validations';
+import {
+  verifyActivateParams,
+  verifyIdParam,
+  verifyLoginParams
+} from '@validations';
 import { ROLES } from '@constants';
 
 const router = Router();
@@ -21,8 +25,12 @@ router
 router
   .route('/desactivate/:id')
   .patch(
-    verifyRefreshToken,
-    [verifyRoles([ROLES.Admin, ROLES.Patient, ROLES.SuperAdmin])],
+    [
+      verifyRefreshToken,
+      ...verifyIdParam,
+      recolectErrors,
+      verifyRoles([ROLES.Admin, ROLES.Patient, ROLES.SuperAdmin])
+    ],
     deleteAccount
   );
 router
