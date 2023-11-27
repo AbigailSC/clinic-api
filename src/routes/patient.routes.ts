@@ -6,8 +6,8 @@ import {
   postPatient,
   updatePatient
 } from '@controllers';
-import { recolectErrors, verifyRefreshToken, verifyRoles } from '@middlewares';
-import { verifyPatientParams } from '@validations';
+import { verifyRefreshToken, verifyRoles } from '@middlewares';
+import { verifyIdParam, verifyPatientParams } from '@validations';
 import { Router } from 'express';
 
 const router = Router();
@@ -15,16 +15,28 @@ const router = Router();
 router
   .route('/')
   .post(
-    [
-      verifyRefreshToken,
-      verifyRoles([ROLES.Admin]),
-      ...verifyPatientParams,
-      recolectErrors
-    ],
+    [verifyRefreshToken, verifyRoles([ROLES.Admin]), ...verifyPatientParams],
     postPatient
   )
-  .get(getPatients);
+  .get([verifyRefreshToken, verifyRoles([ROLES.Admin])], getPatients);
 
-router.route('/:id').put(updatePatient).get(getPatient).delete(deletePatient);
+router
+  .route('/:id')
+  .put(
+    [verifyRefreshToken, verifyRoles([ROLES.Patient]), ...verifyIdParam],
+    updatePatient
+  )
+  .get(
+    [
+      verifyRefreshToken,
+      verifyRoles([ROLES.Patient, ROLES.Admin]),
+      ...verifyIdParam
+    ],
+    getPatient
+  )
+  .delete(
+    [verifyRefreshToken, verifyRoles([ROLES.Patient]), ...verifyIdParam],
+    deletePatient
+  );
 
 export default router;

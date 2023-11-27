@@ -6,12 +6,7 @@ import {
   restoreUser,
   uploadImage
 } from '@controllers';
-import {
-  recolectErrors,
-  upload,
-  verifyRefreshToken,
-  verifyRoles
-} from '@middlewares';
+import { upload, verifyRefreshToken, verifyRoles } from '@middlewares';
 import { ROLES } from '@constants';
 import { verifyIdParam } from '@validations';
 
@@ -28,34 +23,18 @@ router
 router
   .route('/:id')
   .delete(
-    [
-      verifyRefreshToken,
-      verifyRoles([ROLES.Patient]),
-      ...verifyIdParam,
-      recolectErrors
-    ],
+    [verifyRefreshToken, verifyRoles([ROLES.Patient]), ...verifyIdParam],
     deleteUser
   )
   .patch(
-    [
-      verifyRefreshToken,
-      verifyRoles([ROLES.Admin]),
-      ...verifyIdParam,
-      recolectErrors
-    ],
+    [verifyRefreshToken, verifyRoles([ROLES.Admin]), ...verifyIdParam],
     restoreUser
   );
 
 router
   .route('/:id/image')
   .post(
-    [
-      verifyRefreshToken,
-      verifyRoles([ROLES.Admin]),
-      ...verifyIdParam,
-      recolectErrors,
-      upload
-    ],
+    [verifyRefreshToken, verifyRoles([ROLES.Admin]), ...verifyIdParam, upload],
     uploadImage
   );
 

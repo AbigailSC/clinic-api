@@ -6,7 +6,7 @@ import {
   postAdmin,
   updateAdmin
 } from '@controllers';
-import { recolectErrors, verifyRefreshToken, verifyRoles } from '@middlewares';
+import { verifyRefreshToken, verifyRoles } from '@middlewares';
 import { verifyAdminParams, verifyIdParam } from '@validations';
 import { Router } from 'express';
 
@@ -18,8 +18,7 @@ router
     [
       verifyRefreshToken,
       verifyRoles([ROLES.Admin, ROLES.SuperAdmin]),
-      ...verifyAdminParams,
-      recolectErrors
+      ...verifyAdminParams
     ],
     postAdmin
   )
@@ -34,8 +33,7 @@ router
     [
       verifyRefreshToken,
       verifyRoles([ROLES.Admin, ROLES.SuperAdmin]),
-      ...verifyIdParam,
-      recolectErrors
+      ...verifyIdParam
     ],
     updateAdmin
   )
