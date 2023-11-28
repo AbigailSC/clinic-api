@@ -1,6 +1,6 @@
-import pdf from 'pdfkit';
+import PDFDocument from 'pdfkit';
 
-export const document = new pdf({
+export const document = new PDFDocument({
   size: 'A4',
   bufferPages: true,
   margin: 50,
