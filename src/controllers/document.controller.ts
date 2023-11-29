@@ -1,10 +1,10 @@
-import PDFDocument from 'pdfkit';
 import { FormType } from '@interfaces';
 import { catchAsync } from '@middlewares';
 import { Document } from '@models';
 import { getCurrentDateFormatted, getPdfFilename } from '@utils';
 import { RequestHandler } from 'express';
-//import { generateHeaderPdf } from 'src/constants/pdfTemplate';
+import { generateFooterPdf, generateHeaderPdf } from '@constants';
+import { document } from '@config';
 
 export const postDocument: RequestHandler = catchAsync(async (req, res) => {
   const form: FormType = req.body;
@@ -17,18 +17,10 @@ export const postDocument: RequestHandler = catchAsync(async (req, res) => {
   );
 
   const buffers: Buffer[] = [];
-  //generateHeaderPdf(document);
 
-  const document = new PDFDocument({
-    size: 'A4',
-    bufferPages: true,
-    margin: 50,
-    layout: 'portrait',
-    info: {
-      Title: 'Document'
-    }
-  });
-  document.text('Hello World!');
+  generateHeaderPdf(document, dateFormatted);
+  //document.text('Hello World!');
+  generateFooterPdf(document);
   document.end();
   document.on('data', (buffer) => buffers.push(buffer));
   document.on('end', async () => {
