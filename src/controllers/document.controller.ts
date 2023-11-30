@@ -3,7 +3,11 @@ import { catchAsync } from '@middlewares';
 import { Document } from '@models';
 import { getCurrentDateFormatted, getPdfFilename } from '@utils';
 import { RequestHandler } from 'express';
-import { generateFooterPdf, generateHeaderPdf } from '@constants';
+import {
+  generateFooterPdf,
+  generateHeaderPdf,
+  generateTablePersonalInfoPdf
+} from '@constants';
 import { document } from '@config';
 
 export const postDocument: RequestHandler = catchAsync(async (req, res) => {
@@ -19,7 +23,7 @@ export const postDocument: RequestHandler = catchAsync(async (req, res) => {
   const buffers: Buffer[] = [];
 
   generateHeaderPdf(document, dateFormatted);
-  //document.text('Hello World!');
+  generateTablePersonalInfoPdf(document, form.personalInfo, 'Personal Info');
   generateFooterPdf(document);
   document.end();
   document.on('data', (buffer) => buffers.push(buffer));

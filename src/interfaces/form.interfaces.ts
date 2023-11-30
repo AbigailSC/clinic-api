@@ -4,7 +4,7 @@ export interface FormType {
   specialCare: string;
 }
 
-interface PersonalInfoType {
+export interface PersonalInfoType {
   name: string;
   lastname: string;
   birthdate: string;
@@ -15,7 +15,7 @@ interface PersonalInfoType {
   address: string;
 }
 
-interface MedicalHistoryType {
+export interface MedicalHistoryType {
   previousIllnesses: PreviousIllnesses;
   currentMedications: string;
   allergies: Allergies;
