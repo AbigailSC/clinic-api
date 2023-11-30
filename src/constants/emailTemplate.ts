@@ -1,4 +1,5 @@
 import { config } from "@config";
+import { APPNAME } from "./appName";
 
 export const getVerifyTemplate = (): string => {
   return `
@@ -14,7 +15,7 @@ export const getVerifyTemplate = (): string => {
 export const getWelcomeTemplate = (name: string): string => {
   return `
   <h1>Welcome 👋</h1>
-  <p>Hi ${name}, welcome to <b>Clinic App</b>.</br>
+  <p>Hi ${name}, welcome to <b>${APPNAME}</b>.</br>
   This message is to confirm your registration in our application.</p>
   <a href='${config.app.loginAccountUrl}'>Login</a>
   <span>Greetings.</br>
@@ -25,7 +26,7 @@ export const getWelcomeTemplate = (name: string): string => {
 export const getNewDocument = (name:string) => {
   return `
   <h1>Hi ${name}, you have a new document to consent</h1>
-  <p>We inform you that you have a new document pending to sign a new document in the <b>Clinic App</b></p>
+  <p>We inform you that you have a new document pending to sign a new document in the <b>${APPNAME}</b></p>
   <a href='${config.app.signDocumentUrl}'>Login to the System</a>
   <span>Greetings.</br>
   Tonotos Team</span>

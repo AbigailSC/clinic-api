@@ -1,8 +1,8 @@
 import { generateToken, getCredentialsRefreshToken } from '@config';
-import { CustomRequest } from '@interfaces';
+import { CustomRequest, PatientType, UserType } from '@interfaces';
 import { catchAsync } from '@middlewares';
-import { User } from '@models';
-import { messageEmailDesactivated, messageEmailNotFound } from '@utils';
+import { Patient, User } from '@models';
+import { messageEmailDesactivated, messageEmailNotFound, sendEmailWelcome } from '@utils';
 import { RequestHandler } from 'express';
 
 export const singIn: RequestHandler = catchAsync(async (req, res) => {
@@ -45,14 +45,20 @@ export const refreshToken: RequestHandler = catchAsync(
 export const activateAccount: RequestHandler = catchAsync(async (req, res) => {
   const { password } = req.body;
   const { id } = req.params;
-  const userFound = await User.findById(id);
-  if (!userFound) return res.status(404).json({ message: 'User not found' });
+  const userFound: UserType | null = await User.findById(id);
+  if (!userFound) return res.status(404).json({ status: res.status, message: 'User not found' });
   const encryptPassword = await userFound.encryptPassword(password);
 
   await User.findByIdAndUpdate(id, {
     verified: true,
     password: encryptPassword
   });
+
+  const patientFound: PatientType | null = await Patient.findOne(({
+    email: userFound.email
+  }))
+  if (!patientFound) return res.status(404).json({ status: res.status, message: 'Patient not found' });
+  await sendEmailWelcome(userFound.email, patientFound.name);
   res.json({
     status: res.statusCode,
     message: 'Account activated successfully'

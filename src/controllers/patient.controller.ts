@@ -2,6 +2,7 @@ import { ROLES } from '@constants';
 import { PatientType } from '@interfaces';
 import { catchAsync } from '@middlewares';
 import { Patient, User } from '@models';
+import { sendEmailVerification } from '@utils';
 import { RequestHandler } from 'express';
 
 export const postPatient: RequestHandler = catchAsync(async (req, res) => {
@@ -40,6 +41,7 @@ export const postPatient: RequestHandler = catchAsync(async (req, res) => {
     rol: ROLES.Patient
   });
   await newUser.save();
+  await sendEmailVerification(email);
   return res.status(201).json({
     status: res.statusCode,
     message: 'Patient created'
