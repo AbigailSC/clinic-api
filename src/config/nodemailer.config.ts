@@ -20,7 +20,7 @@ export const sendEmail = async (
 ): Promise<void> => {
   try {
     await transporter.sendMail({
-      from: `Hospital app <${config.email.user}>`,
+      from: `Clinic app <${config.email.user}>`,
       to: email,
       subject,
       html
