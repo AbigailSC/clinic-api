@@ -10,7 +10,10 @@ export const config = {
   app: {
     env: process.env.NODE_ENV ?? 'development',
     port: process.env.PORT ?? 4000,
-    originUrl: process.env.ORIGIN_URL ?? 'http://localhost:4000/'
+    originUrl: process.env.ORIGIN_URL ?? 'http://localhost:4000/',
+    verifyAccountUrl: process.env.VERIFY_ACCOUNT_URL ?? 'http://localhost:4000/verify',
+    loginAccountUrl: process.env.LOGIN_ACCOUNT_URL ?? 'http://localhost:4000/login',
+    signDocumentUrl: process.env.SIGN_DOCUMENT_URL ?? 'http://localhost:4000/my-documents'
   },
   db: {
     uri: process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017/api',
