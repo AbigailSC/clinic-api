@@ -56,8 +56,7 @@ export const verifyPatientParams = [
     min: 7
   }),
   check('address', 'Address is not a string').isString(),
-  check('birthdate', 'Birthdate is required').not().isEmpty(),
-  check('birthdate', 'Birthdate is not a Date').isDate(),
+  check('birthdate', 'Birthdate is required').not().isEmpty().toDate(),
   check('socialWork', 'Social work is required'),
   check('socialWork', 'Social work is not a boolean').isBoolean(),
   (req: Request, res: Response, next: NextFunction) => {

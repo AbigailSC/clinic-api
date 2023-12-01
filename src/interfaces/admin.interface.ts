@@ -1,8 +1,8 @@
 export interface AdminType {
   name: string;
   lastname: string;
-  document: string;
+  document: number;
   email: string;
-  phone: number;
+  phone: string;
   address: string;
 }

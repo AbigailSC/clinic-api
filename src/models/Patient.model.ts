@@ -16,7 +16,7 @@ const PatientSchema = new Schema(
       lowercase: true
     },
     document: {
-      type: String,
+      type: Number,
       required: true
     },
     email: {
@@ -26,7 +26,7 @@ const PatientSchema = new Schema(
       lowercase: true
     },
     phone: {
-      type: Number,
+      type: String,
       required: true
     },
     address: {
@@ -41,10 +41,12 @@ const PatientSchema = new Schema(
       type: Boolean,
       default: false
     },
-    consents: [{
-      type: Schema.Types.ObjectId,
-      ref: 'document'
-    }]
+    consents: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'document'
+      }
+    ]
   },
   {
     timestamps: true,
