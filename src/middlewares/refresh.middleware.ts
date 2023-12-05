@@ -8,15 +8,15 @@ export const verifyRefreshToken = async (
   res: Response,
   next: NextFunction
 ): Promise<void | Response> => {
-  const cookie = req.cookies.refreshToken;
+  const {refreshToken} = req.body;
   try {
-    if (cookie === undefined) {
+    if (refreshToken === undefined) {
       return res.status(401).json({
         status: res.statusCode,
         message: 'Access denied, cookie not found'
       });
     }
-    const payload = verify(cookie, config.auth.jwtSecret) as JwtPayload;
+    const payload = verify(refreshToken, config.auth.jwtSecret) as JwtPayload;
     req.id = payload.id;
 
     next();
