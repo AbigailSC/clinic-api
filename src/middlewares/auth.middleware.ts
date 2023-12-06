@@ -92,11 +92,10 @@ export const verifyUserVerified = async (
 };
 
 export const verifyRoles: (roles: string[]) => RequestHandler =
-  (roles) => async (req, res, next) => {
-    const token = req.headers.authorization as string;
+  (roles) => async (req: CustomRequest, res, next) => {
+    const id = req.id as string;
     try {
-      const decoded = await decodedToken(token);
-      const user = await User.findById(decoded.id);
+      const user = await User.findById(id);
       if (!roles.includes(user!.rol))
         return res.status(401).json({
           status: res.statusCode,
