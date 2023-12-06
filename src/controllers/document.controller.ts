@@ -1,4 +1,4 @@
-import { FormType, QueryType } from '@interfaces';
+import { FilteerByDateType, FilterBySignType, FormType, QueryType } from '@interfaces';
 import { catchAsync } from '@middlewares';
 import { Document } from '@models';
 import { getCurrentDateFormatted, getPdfFilename } from '@utils';
@@ -82,13 +82,13 @@ export const getDocuments: RequestHandler = catchAsync(async(req, res) => {
     .limit(limit)
     .skip((page - 1) * limit);
 
-    const documentsResponse = {
-      totalPages: Math.ceil(documentsLength / limit),
-      currentPage: page,
-      hasNextPage: page < Math.ceil(documentsLength / limit),
-      hasPreviousPage: page > 1,
-      data: documents
-    };
+  const documentsResponse = {
+    totalPages: Math.ceil(documentsLength / limit),
+    currentPage: page,
+    hasNextPage: page < Math.ceil(documentsLength / limit),
+    hasPreviousPage: page > 1,
+    data: documents
+  };
 
   res.json({
     status: res.status,
@@ -114,14 +114,13 @@ export const getDocumentsByAdmin = catchAsync( async(req, res) => {
     .limit(limit)
     .skip((page - 1) * limit);
 
-    const documentsResponse = {
-      totalPages: Math.ceil(documentsLength / limit),
-      currentPage: page,
-      hasNextPage: page < Math.ceil(documentsLength / limit),
-      hasPreviousPage: page > 1,
-      data: documents
-    };
-
+  const documentsResponse = {
+    totalPages: Math.ceil(documentsLength / limit),
+    currentPage: page,
+    hasNextPage: page < Math.ceil(documentsLength / limit),
+    hasPreviousPage: page > 1,
+    data: documents
+  };
   res.json({
     status: res.status,
     message: "Documents obtained by admin",
@@ -146,13 +145,13 @@ export const getDocumentsByPatient = catchAsync( async(req,res) => {
     .limit(limit)
     .skip((page - 1) * limit);
 
-    const documentsResponse = {
-      totalPages: Math.ceil(documentsLength / limit),
-      currentPage: page,
-      hasNextPage: page < Math.ceil(documentsLength / limit),
-      hasPreviousPage: page > 1,
-      data: documents
-    };
+  const documentsResponse = {
+    totalPages: Math.ceil(documentsLength / limit),
+    currentPage: page,
+    hasNextPage: page < Math.ceil(documentsLength / limit),
+    hasPreviousPage: page > 1,
+    data: documents
+  };
 
   res.json({
     status: res.status,
@@ -161,6 +160,63 @@ export const getDocumentsByPatient = catchAsync( async(req,res) => {
   })
 })
 
-export const getDocumentsByDateRange = catchAsync(async (_req, _res) => {
+export const getDocumentsByDateRange = catchAsync(async (req, res) => {
+  const {dateStart, dateEnd} = req.query as FilteerByDateType;
+  const startDate = new Date(dateStart as string);
+  const endDate = new Date(dateEnd as string);
+
+  const documents = await Document.find({
+    createdAt: { $gte: startDate, $lte: endDate }
+  });
+
+  res.json({
+    status: res.status,
+    message: "Documents obtained!",
+    data: documents 
+  })
+})
+
+export const filterDocumentsSigned = catchAsync(async (req,res) => {
+  const { page = 1, limit = 10, signed = true } = req.query as FilterBySignType;
+  const documentsLength = await Document.find({
+    signed
+  }).countDocuments();
+  if (documentsLength === 0) {
+    res.status(204).json({
+      status: res.status,
+      message: "No documents found"
+    })
+  }
+  const documents = await Document.find()
+    .populate('adminId signedBy')
+    .limit(limit)
+    .skip((page - 1) * limit);
+
+  const documentsResponse = {
+    totalPages: Math.ceil(documentsLength / limit),
+    currentPage: page,
+    hasNextPage: page < Math.ceil(documentsLength / limit),
+    hasPreviousPage: page > 1,
+    data: documents
+  };
+
+  res.json({
+    status: res.status,
+    message: "Documents obtained",
+    data: documentsResponse
+  })
+})
+
+export const orderDocumentsByDateSigned = catchAsync(async (_req, _res) => {
+
+})
+
+
+export const orderDocumentsByDateCreated = catchAsync(async (_req, _res) => {
+
+})
+
+
+export const orderDocumentsByPatientName = catchAsync(async (_req, _res) => {
 
 })
