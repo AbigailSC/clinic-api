@@ -8,7 +8,7 @@ export const verifyRefreshToken = async (
   res: Response,
   next: NextFunction
 ): Promise<void | Response> => {
-  const { refreshToken } = req.body;
+  const { refreshToken } = req.headers;
   try {
     if (refreshToken === undefined) {
       return res.status(401).json({
@@ -16,7 +16,7 @@ export const verifyRefreshToken = async (
         message: 'Access denied, token not found'
       });
     }
-    const payload = verify(refreshToken, config.auth.jwtSecret) as JwtPayload;
+    const payload = verify(refreshToken as string, config.auth.jwtSecret) as JwtPayload;
     req.id = payload.id;
     next();
   } catch (error) {
