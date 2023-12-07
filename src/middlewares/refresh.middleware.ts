@@ -8,7 +8,7 @@ export const verifyRefreshToken = async (
   res: Response,
   next: NextFunction
 ): Promise<void | Response> => {
-  const { refreshToken } = req.headers;
+  const refreshToken  = req.headers['refreshtoken'];
   try {
     if (refreshToken === undefined) {
       return res.status(401).json({
@@ -17,6 +17,7 @@ export const verifyRefreshToken = async (
       });
     }
     const payload = verify(refreshToken as string, config.auth.jwtSecret) as JwtPayload;
+    
     req.id = payload.id;
     next();
   } catch (error) {

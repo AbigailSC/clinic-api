@@ -77,8 +77,21 @@ export const getUsers: RequestHandler = catchAsync(async (_req, res) => {
   );
 
   export const uploadImage: RequestHandler = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const filename = req.file?.filename;
+    const user = await User.findById(id);
+    console.log(id)
+    console.log(user)
+    if (user === null){
+      return res.status(204).json({
+        status: res.status,
+        message: "No user found"
+      })
+    }
+    await User.findByIdAndUpdate(id, {
+      image: filename
+    })
     res.status(201).json({
       message: 'File upload succesfully!',
-      file: req.file as Express.Multer.File
     })
   });

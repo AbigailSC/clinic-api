@@ -23,7 +23,7 @@ router
 router
   .route('/:id')
   .put(
-    [verifyRefreshToken, verifyRoles([ROLES.Patient]), ...verifyIdParam],
+    [verifyRefreshToken, verifyRoles([ROLES.Patient, ROLES.Admin]), ...verifyIdParam],
     updatePatient
   )
   .get(

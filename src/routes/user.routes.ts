@@ -32,9 +32,9 @@ router
   );
 
 router
-  .route('/:id/image')
+  .route('/image/:id')
   .post(
-    [verifyRefreshToken, verifyRoles([ROLES.Admin]), ...verifyIdParam, upload],
+    [verifyRefreshToken, verifyRoles([ROLES.Admin, ROLES.Patient]), ...verifyIdParam, upload.single('image')],
     uploadImage
   );
 

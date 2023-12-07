@@ -1,9 +1,12 @@
+//import { config, s3Client } from '@config';
 import { ROLES } from '@constants';
 import { PatientType } from '@interfaces';
 import { catchAsync } from '@middlewares';
 import { Patient, User } from '@models';
 import { sendEmailVerification } from '@utils';
 import { RequestHandler } from 'express';
+// import {v4 as uuid} from "uuid";
+// import { PutObjectCommand } from '@aws-sdk/client-s3';
 
 export const postPatient: RequestHandler = catchAsync(async (req, res) => {
   const {
@@ -59,6 +62,29 @@ export const updatePatient: RequestHandler = catchAsync(async (req, res) => {
     phone,
     socialWork
   }: PatientType = req.body;
+
+  // const file = req.file;
+  // console.log(file);
+
+  // if(file !== undefined) {
+  //   const fileExtension = file.originalname.split('.').pop();
+  //   const bytes = file.buffer;
+  //   const buffer = Buffer.from(bytes);
+  //   const bucketParams = {
+  //     Bucket: config.s3.bucketName,
+  //     Key: `${uuid()}.${fileExtension}`,
+  //     Body: buffer,
+  //     ACL: "public-read" as const,
+  //   }
+  //   const result = await s3Client.send(new PutObjectCommand(bucketParams));
+  //   console.log(result);
+
+  //   const url = `${config.s3.endpoint}/${config.s3.bucketName}/${bucketParams.Key}`
+
+  //   await User.findOneAndUpdate({patientId: id}, {
+  //     image: url
+  //   })
+  // }
 
   const patientExists = await Patient.findOne({ id });
   if (patientExists !== null)

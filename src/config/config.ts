@@ -16,10 +16,11 @@ export const config = {
     signDocumentUrl: process.env.SIGN_DOCUMENT_URL ?? 'http://localhost:4000/my-documents'
   },
   s3: {
-    secretKey: process.env.SECRET_KEY ?? '',
-    accessKey: process.env.ACCESS_KEY ?? '',
-    endpoint: process.env.S3_ENDPOINT ?? '',
-    region: process.env.S3_REGION ?? ''
+    secretKey: process.env.DO_SPACES_SECRET_KEY ?? '',
+    accessKey: process.env.DO_SPACES_ACCESS_KEY ?? '',
+    endpoint: process.env.DO_SPACES_ENDPOINT ?? '',
+    region: process.env.DO_SPACES_REGION ?? '',
+    bucketName: process.env.DO_SPACES_BUCKET_NAME ?? ''
   },
   db: {
     uri: process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017/api',
