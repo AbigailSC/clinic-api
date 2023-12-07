@@ -15,6 +15,12 @@ export const config = {
     loginAccountUrl: process.env.LOGIN_ACCOUNT_URL ?? 'http://localhost:4000/login',
     signDocumentUrl: process.env.SIGN_DOCUMENT_URL ?? 'http://localhost:4000/my-documents'
   },
+  s3: {
+    secretKey: process.env.SECRET_KEY ?? '',
+    accessKey: process.env.ACCESS_KEY ?? '',
+    endpoint: process.env.S3_ENDPOINT ?? '',
+    region: process.env.S3_REGION ?? ''
+  },
   db: {
     uri: process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017/api',
     devUri: process.env.MONGODB_DEV_URI ?? 'mongodb://127.0.0.1:27017/',
