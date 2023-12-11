@@ -78,7 +78,8 @@ export const getUsers: RequestHandler = catchAsync(async (_req, res) => {
 
   export const uploadImage: RequestHandler = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const filename = req.file?.filename;
+    const filename = req.file as Express.MulterS3.File;
+    console.log(filename);
     const user = await User.findById(id);
     console.log(id)
     console.log(user)
@@ -88,8 +89,14 @@ export const getUsers: RequestHandler = catchAsync(async (_req, res) => {
         message: "No user found"
       })
     }
+    if(filename === undefined){
+      return res.status(204).json({
+        status: res.status,
+        message: "You must attachment a image"
+      })
+    }
     await User.findByIdAndUpdate(id, {
-      image: filename
+      image: filename.location
     })
     res.status(201).json({
       message: 'File upload succesfully!',
