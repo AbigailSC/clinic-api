@@ -5,6 +5,6 @@ export const getPdfFilename = (
   lastname: string,
   date: string
 ): string => {
-  const filename = `${APPNAME} - ${name} ${lastname} - ${date}.pdf`;
+  const filename = `${APPNAME} ${name}_${lastname} ${date}`;
   return filename;
 };
