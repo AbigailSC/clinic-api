@@ -20,23 +20,15 @@ export const postDocument: RequestHandler = catchAsync(async (req, res) => {
     form.personalInfo.lastname,
     dateFormatted
   );
-  console.log(
-    '🚀 ~ file: document.controller.ts:19 ~ constpostDocument:RequestHandler=catchAsync ~ filename:',
-    filename
-  );
 
   const pdfDataBuffer = await generatePDF(document, form, dateFormatted);
 
-  const test = await s3.putObject({
+  await s3.putObject({
     Bucket: config.s3.bucketName,
-    Key: `Consents-signed/${filename}`,
+    Key: `Consents/${filename}`,
     Body: pdfDataBuffer,
     ACL: 'public-read'
   });
-  console.log(
-    '🚀 ~ file: document.controller.ts:32 ~ constpostDocument:RequestHandler=catchAsync ~ test:',
-    test
-  );
 
   const newDocument = new Document({
     adminId,
