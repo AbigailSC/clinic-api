@@ -6,7 +6,11 @@ import {
   refreshToken,
   logOut
 } from '@controllers';
-import { verifyRefreshToken, verifyRoles } from '@middlewares';
+import {
+  verifyRefreshToken,
+  verifyRoles,
+  verifyUserVerifiedToLogin
+} from '@middlewares';
 import {
   verifyActivateParams,
   verifyIdParam,
@@ -16,7 +20,9 @@ import { ROLES } from '@constants';
 
 const router = Router();
 
-router.route('/login').post([...verifyLoginParams], singIn);
+router
+  .route('/login')
+  .post([...verifyLoginParams, verifyUserVerifiedToLogin], singIn);
 router.route('/refresh-token').post([verifyRefreshToken], refreshToken);
 router.route('/activate/:id').put([...verifyActivateParams], activateAccount);
 

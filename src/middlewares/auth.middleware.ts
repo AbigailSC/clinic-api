@@ -61,7 +61,7 @@ export const verifyUserIsActivated = async (
     console.log(error);
     return res.status(401).json({
       status: res.statusCode,
-      message: 'Access denied, you re not Logged In'
+      message: 'Access denied, you re not verified'
     });
   }
 };
@@ -86,7 +86,37 @@ export const verifyUserVerified = async (
     console.log(error);
     return res.status(401).json({
       status: res.statusCode,
-      message: 'Access denied, you re not Logged In'
+      message: 'Access denied, you re not verified'
+    });
+  }
+};
+
+export const verifyUserVerifiedToLogin = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+): Promise<void | Response> => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({
+        status: res.statusCode,
+        message: 'User not found'
+      });
+    }
+    if (!user.verified) {
+      return res.status(401).json({
+        status: res.statusCode,
+        message: 'User not verified'
+      });
+    }
+    next();
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({
+      status: res.statusCode,
+      message: 'Access denied, you re not verified'
     });
   }
 };
@@ -95,7 +125,7 @@ export const verifyRoles: (roles: string[]) => RequestHandler =
   (roles) => async (req: CustomRequest, res, next) => {
     const token = req.headers.authorization as string;
     try {
-      const {id} = await decodedToken(token);
+      const { id } = await decodedToken(token);
       const user = await User.findById(id);
       if (!roles.includes(user!.rol))
         return res.status(401).json({

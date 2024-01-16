@@ -29,20 +29,27 @@ export const postDocument: RequestHandler = catchAsync(async (req, res) => {
     Body: pdfDataBuffer,
     ACL: 'public-read'
   });
+  const filepathPdf = `${config.s3.endpoint}${config.s3.bucketName}/Consents/${filename}`;
+
+  console.log(
+    '🚀 ~ constpostDocument:RequestHandler=catchAsync ~ config.s3.bucketName:',
+    config.s3.bucketName
+  );
+
+  console.log(
+    '🚀 ~ constpostDocument:RequestHandler=catchAsync ~ config.s3.endpoint:',
+    config.s3.endpoint
+  );
 
   const newDocument = new Document({
     adminId,
-    form: pdfDataBuffer,
+    form: filepathPdf,
     signed: false,
     signedAt: null,
     signedBy: patientId
   });
   await newDocument.save();
 
-  // res.writeHead(200, {
-  //   'Content-Type': 'application/pdf',
-  //   'Content-Disposition': `attachment; filename=${filename}.pdf`
-  // });
   res.json({
     status: res.statusCode,
     message: 'Form successfully generated!'
@@ -50,10 +57,11 @@ export const postDocument: RequestHandler = catchAsync(async (req, res) => {
 });
 
 export const signDocument: RequestHandler = catchAsync(async (req, res) => {
-  const documentSigned = req.file;
-  console.log(documentSigned);
+  const documentSigned = req.file as Express.MulterS3.File;
+
   const { id } = req.params;
   await Document.findByIdAndUpdate(id, {
+    form: documentSigned.location,
     signed: true,
     signedAt: new Date()
   });
