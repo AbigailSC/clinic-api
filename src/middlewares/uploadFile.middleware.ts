@@ -77,11 +77,11 @@ export const uploadDocumentSigned = multer({
     acl: 'public-read',
     key: function (
       _req: Request,
-      _file: Express.Multer.File,
+      file: Express.Multer.File,
       cb: (error: Error | null, destination: string) => void
     ) {
       // save file to Spaces, you can use / to add folders directory
-      const fileName = Date.now().toString(); //file.originalname;
+      const fileName = `${file.originalname} - Signed`;
       cb(null, `Consents-signed/${fileName}`);
     }
   })

@@ -1,4 +1,5 @@
 import {
+  DocumentType,
   FilteerByDateType,
   FilterBySignType,
   FormType,
@@ -29,7 +30,7 @@ export const postDocument: RequestHandler = catchAsync(async (req, res) => {
     Body: pdfDataBuffer,
     ACL: 'public-read'
   });
-  const filepathPdf = `${config.s3.endpoint}${config.s3.bucketName}/Consents/${filename}`;
+  const filepathPdf = `${config.s3.bucketName}${config.s3.endpoint}/Consents/${filename}`;
 
   console.log(
     '🚀 ~ constpostDocument:RequestHandler=catchAsync ~ config.s3.bucketName:',
@@ -60,6 +61,19 @@ export const signDocument: RequestHandler = catchAsync(async (req, res) => {
   const documentSigned = req.file as Express.MulterS3.File;
 
   const { id } = req.params;
+  const documentHaveSigned: DocumentType | null = await Document.findById(id);
+  if (documentHaveSigned == null) {
+    return res.status(404).json({
+      status: res.status,
+      message: 'Document not found!'
+    });
+  }
+  if (documentHaveSigned.signed) {
+    return res.status(400).json({
+      status: res.status,
+      message: 'Document already signed!'
+    });
+  }
   await Document.findByIdAndUpdate(id, {
     form: documentSigned.location,
     signed: true,
