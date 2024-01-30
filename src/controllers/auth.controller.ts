@@ -31,7 +31,7 @@ export const singIn: RequestHandler = catchAsync(async (req, res) => {
   return res.json({
     status: res.statusCode,
     message: 'Log in successfully',
-    token
+    token: token
   });
 });
 
