@@ -25,17 +25,13 @@ export const singIn: RequestHandler = catchAsync(async (req, res) => {
       .json({ status: res.statusCode, message: 'Invalid password' });
   }
   const token = await generateToken(userFound.id);
-  console.log(
-    '🚀 ~ file: auth.controller.ts:28 ~ constsingIn:RequestHandler=catchAsync ~ token:',
-    token
-  );
-
   res.cookie('refreshToken', token, getCredentialsRefreshToken());
 
   //res.set('refreshToken', await generateToken(userFound.id));
   return res.json({
     status: res.statusCode,
-    message: 'Log in successfully'
+    message: 'Log in successfully',
+    token
   });
 });
 
